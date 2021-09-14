@@ -1,6 +1,6 @@
 
 ### Clone
-git clone https://github.com/Nur-A-Alam1997/Bugtracker.git
+git clone https://github.com/Nur-A-Alam1997/Bugtracker.git or download the zip folder
 
 * change directory to Task
 
