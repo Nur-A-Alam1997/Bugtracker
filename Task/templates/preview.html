@@ -1,3 +1,4 @@
+%%html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,6 +13,7 @@
 		<title>CSV upload</title>
 	</head>
 	<body>
+        <p>Please Upload csv File</p>
     <form id="upload-file" method="post" enctype="multipart/form-data">
       <fieldset>
           <label for="file">Select a file</label>
@@ -21,7 +23,10 @@
           <button id="upload-file-btn" type="button">Upload</button>
       </fieldset>
   </form>
-	
+    <a href="/data">
+        <button class="button button5" style="background-color: #555555">Show Data</button>
+    <a>
+
 		<!-- <input type="file" name="filename" id="filename">
 		<button id="upload">upload</button>-->
 		<div class="csv"></div> 
