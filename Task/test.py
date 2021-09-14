@@ -11,7 +11,7 @@ class ReadData:
     def read_data(self):
         data=pd.read_csv(self.filename)
         # display(data)
-        return data
+        return data.dropna(how='all')
 
 import warnings
 warnings.filterwarnings("ignore", 'This pattern has match groups')

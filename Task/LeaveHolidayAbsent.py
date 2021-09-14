@@ -24,7 +24,7 @@ class LeaveHolidayAbsent:
 
     @property
     def present(self):
-        time = self.data[['Date','First half start','Second half start']].dropna()
+        time = self.data[['Date','First half start','Second half start']].dropna(how="any")
         time = time[time['First half start'].str.contains('^-?([0-1]?[0-9]|2[0-3]):[0-5][0-9]$')]#check if date
         return time.shape[0]
 
