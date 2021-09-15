@@ -5,7 +5,7 @@ git clone https://github.com/Nur-A-Alam1997/Bugtracker.git or download the zip f
 * change directory to Task
 
 ### dependency
->pip install requirement.txt
+> pip install -r requirement.txt
 
 ### run:
 >python app.py
