@@ -1,6 +1,6 @@
 
 ### Clone
-git clone https://github.com/Nur-A-Alam1997/Bugtracker.git or download the zip folder
+git clone https://github.com/Nur-A-Alam1997/DataVisualizer.git or download the zip folder
 
 * change directory to Task
 
