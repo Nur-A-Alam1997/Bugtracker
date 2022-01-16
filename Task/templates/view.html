@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <title>File Upload</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.css">
+</head>
+
+<body>
+    <h1>File Upload</h1>
+    <form action="{{ url_for('home') }}" id="myDropzone" class="dropzone">
+        <button type="submit" id="button" class="btn btn-primary">Submit</button>
+
+        <!-- <img src="removebutton.png" alt="Click me to remove the file."> data-dz-remove /> -->
+    </form>
+</body>
+<script>
+    if(typeof Dropzone != 'undefined')
+    {
+        Dropzone.autoDiscover = false;
+        var myDropzone = new Dropzone("#myDropzone", {
+        url: "/",
+        maxFileSize: 50,
+        acceptedFiles: ".pdf",
+        addRemoveLinks: true,
+        //more dropzone options here
+    });
+
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.js"></script>
+
+</html>

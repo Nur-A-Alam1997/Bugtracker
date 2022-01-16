@@ -1,0 +1,225 @@
+%%html
+<!DOCTYPE html>
+<html lang="en">
+  <!-- https://tobiasahlin.com/blog/introduction-to-chartjs/ -->
+  <!-- https://codepen.io/elisescolaro/details/YaGyMW -->
+  <!-- https://www.chartjs.org/samples/latest/charts/bar/stacked.html -->
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <style>
+      body,
+      html {
+        background: #181e24;
+        padding-top: 10px;
+      }
+
+      .wrapper {
+        width: 60%;
+        display: block;
+        overflow: hidden;
+        margin: 0 auto;
+        padding: 60px 50px;
+        background: #fff;
+        border-radius: 4px;
+      }
+
+      canvas {
+        background: #fff;
+        height: 400px;
+      }
+
+      h1 {
+        font-family: Roboto;
+        color: #fff;
+        margin-top: 50px;
+        font-weight: 200;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <canvas id="myChart4" width="800" height="450"></canvas>
+    </div>
+    <div class="wrapper">
+      <canvas id="myChart3" width="800" height="450"></canvas>
+    </div>
+    <div class="wrapper">
+      <canvas id="doughnut-chart" width="800" height="450"></canvas>
+    </div>
+    <!-- <div>
+      <canvas id="mixed-chart" width="800" height="450"></canvas>
+    </div>
+    <div>
+      <canvas id="bar-chart-grouped" width="600" height="450"></canvas>
+    </div>
+    <div>
+      <canvas id="doughnut-chart" width="200" height="50"></canvas>
+    </div>
+    <div>
+      <canvas id="pie-chart" width="400" height="250"></canvas>
+    </div>
+    <div>
+      <canvas id="bar-chart" width="400" height="250"></canvas>
+    </div>
+    <div>
+      <canvas id="line-chart" width="400" height="250"></canvas>
+    </div> -->
+
+    <script>
+      var ctx = document.getElementById('myChart4').getContext('2d');
+
+      // bar chart overtime
+      var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: [
+          {% for item in labels %}
+            "{{ item }}",
+          {% endfor %}
+        ],
+          datasets: [
+            {
+              label: 'Overtime',
+              backgroundColor: '##008d93',
+              data: [{% for item in values %}
+              "{{ item }}",
+            {% endfor %}]
+            },
+          ],
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Overtime count (per-month)',
+            },
+          tooltips: {
+            displayColors: true,
+            callbacks: {
+              mode: 'x',
+            },
+          },
+          scales: {
+            xAxes: [
+              {
+                stacked: true,
+                gridLines: {
+                  display: false,
+                },
+              },
+            ],
+            yAxes: [
+              {
+                stacked: true,
+                scaleLabel: {
+                display: true,
+                labelString: 'Overtime (minutes)'
+            },
+                ticks: {
+                  beginAtZero: true,
+                },
+                type: 'linear',
+              },
+            ],
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          legend: {position: 'bottom'},
+        },
+      });
+    // bar chart 2
+    var cntx = document.getElementById('myChart3').getContext('2d');
+    var mynChart = new Chart(cntx, {
+        type: 'bar',
+        data: {
+          labels:[{% for item in total_work_in_month_bar %}
+              "{{ item }}",
+            {% endfor %}],
+          datasets: [
+            {
+              label: 'duration',
+              backgroundColor: '#e8c3b9',
+              data:[{% for item in total_work_in_month_values %}
+              "{{ item }}",
+            {% endfor %}] ,
+            },
+          ],
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Total working duration (per-month) '+'({{total_work_sum}}) mins. in total',
+            },
+          tooltips: {
+            displayColors: true,
+            callbacks: {
+              mode: 'x',
+            },
+          },
+          scales: {
+            xAxes: [
+              {
+                stacked: true,
+                gridLines: {
+                  display: false,
+                },
+              },
+            ],
+            yAxes: [
+              {
+                stacked: true,
+                scaleLabel: {
+                display: true,
+                labelString: ' working duration (minutes)'
+            },
+                ticks: {
+                  beginAtZero: true,
+                },
+                type: 'linear',
+              },
+            ],
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          legend: {position: 'bottom'},
+        },
+      });
+
+      //doughnut chart
+      new Chart(document.getElementById('doughnut-chart'), {
+        type: 'doughnut',
+        data: {
+          labels: [
+        'absent',
+        'holiday',
+        'leave',
+        'present',
+        ],
+          datasets: [
+            {
+              label: 'Population (millions)',
+              backgroundColor: [
+                '#3e95cd',
+                '#8e5ea2',
+                '#3cba9f',
+                '#e8c3b9',
+                // '#c45850',
+              ],
+              data: [{{absent}}, {{holiday}}, {{leave}}, {{present}}],
+            },
+          ],
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Attendance Balance (per-month)',
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

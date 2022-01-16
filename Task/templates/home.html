@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-control" content="no-cache">
+  <title>CSV upload</title>
+
+  <head>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+      integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  </head>
+
+<body>
+
+  <div class="container m-5">
+    <p>Please Upload csv File</p>
+    <div class="col-5">
+      <div class="card">
+        <div class="card-body">
+          <form id="upload-file" method="post" enctype="multipart/form-data">
+            <div class="input-group mb-3">
+              <input type="file" id='file' name="file" class="form-control" placeholder="test.csv" aria-label=""
+                aria-describedby="basic-addon1">
+              <div class="input-group-prepend">
+                <button id='upload-file-btn' class="btn btn-outline-secondary" type="button">Upload</button>
+              </div>
+            </div>
+
+
+
+          </form>
+
+          <a href="/data" style="cursor: pointer;">
+            <button class="btn btn-outline-success button5" disabled id='show-btn'
+              style="background-color: #555555">Show Data</button>
+            <a>
+
+        </div>
+      </div>
+    </div>
+    <div class="csv"></div>
+  </div>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+</body>
+<script>
+  $(document).ready(function () {
+    $('#upload-file-btn').click(function () {
+
+      var csv = $('#file');
+      var csvFile = csv[0].files[0];
+      var ext = csv.val().split(".").pop().toLowerCase();
+
+      if ($.inArray(ext, ["csv"]) === -1) {
+        $('.csv').append(
+          `<div class="alert alert-danger" role="alert">
+                Please select a valid CSV!
+              </div>`
+        );
+        return false;
+      }
+      if (csvFile != undefined) {
+
+
+        var form_data = new FormData($('#upload-file')[0]);
+        $.ajax({
+          type: 'POST',
+          url: '/',
+          data: form_data,
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function (data) {
+            $('.csv').append(
+              `<div class="alert alert-success" role="alert">
+                Upload Successful...!
+              </div>`
+            );
+            $('#show-btn').removeAttr('disabled')
+            console.log('Success!');
+
+          },
+          failure: function (data) {
+            $('.csv').append(
+              `<div class="alert alert-danger" role="alert">
+                Upload Failed!
+              </div>`
+            );
+            console.log('failed!');
+
+          }
+        })
+
+
+
+
+      }
+    });
+  });
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+  integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+  integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</head>
