@@ -10,6 +10,9 @@ git clone https://github.com/Nur-A-Alam1997/DataVisualizer.git or download the z
 >python app.py
 
 
+# CSV Schema
+![alt text](./ss/sample.png?raw=true)
+
 # Bar Chart
 ![alt text](./ss/overtime.png?raw=true)
 

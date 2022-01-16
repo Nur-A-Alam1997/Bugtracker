@@ -23,12 +23,56 @@
   </head>
 
 <body>
+  <style>
+    .mystyle {
+      font-size: 11pt;
+      font-family: Arial;
+      border-collapse: collapse;
+      /* border: 1px solid silver; */
 
+    }
+
+    body {
+      background-color: #1E1E1E
+    }
+
+    .mystyle td,
+    th {
+      padding: 0.5em;
+    }
+
+    thead tr th {
+      text-align: left;
+    }
+
+    table {
+      border: 0px;
+      color: #d5d5d5;
+    }
+
+    .mystyle tr:nth-child(even) {
+      background: #383838;
+    }
+
+    .mystyle tr:nth-child(odd) {
+      background: #454545;
+    }
+
+    .mystyle tr:hover {
+      opacity: 0.5;
+      cursor: pointer;
+    }
+  </style>
   <div class="container m-5">
-    <p>Please Upload csv File</p>
-    <div class="col-5">
+    <div class="card-body" >
+
+      <p style="color:#d5d5d5">Sample file schema</p>
+      <img src="{{url_for('static', filename='sample.png')}}" alt="" width="700" height="200">
+    </div>
+    <div class="col-9">
       <div class="card">
         <div class="card-body">
+          <p>Please Upload csv File</p>
           <form id="upload-file" method="post" enctype="multipart/form-data">
             <div class="input-group mb-3">
               <input type="file" id='file' name="file" class="form-control" placeholder="test.csv" aria-label=""
@@ -41,7 +85,6 @@
 
 
           </form>
-
           <a href="/data" style="cursor: pointer;">
             <button class="btn btn-outline-success button5" disabled id='show-btn'
               style="background-color: #555555">Show Data</button>
@@ -54,11 +97,17 @@
   </div>
 
 
+  <div class="container col-9 m-5" id='table-1' hidden>
+    <h1 id="file-name" style = "color:white"></h1>
+    <div class="card card-body" id="table">
 
+    </div>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
 </body>
 <script>
   $(document).ready(function () {
+    counter = 0
     $('#upload-file-btn').click(function () {
 
       var csv = $('#file');
@@ -73,7 +122,7 @@
         );
         return false;
       }
-      if (csvFile != undefined) {
+      if (csvFile != undefined && counter == 0) {
 
 
         var form_data = new FormData($('#upload-file')[0]);
@@ -85,19 +134,29 @@
           cache: false,
           processData: false,
           success: function (data) {
-            $('.csv').append(
-              `<div class="alert alert-success" role="alert">
+            if (counter == 0) {
+
+              data = JSON.parse(data)
+              console.log('Success!');
+
+              $('.csv').append(
+                `<div class="alert alert-success" role="alert">
                 Upload Successful...!
-              </div>`
-            );
-            $('#show-btn').removeAttr('disabled')
-            console.log('Success!');
+                </div>`
+              );
+              $('#file-name').append(data["filename"]);
+              $('#table').append(data["table"]);
+              $('#table-1').removeAttr('hidden')
+              $('#show-btn').removeAttr('disabled')
+              counter++
+            }
 
           },
-          failure: function (data) {
+          error: function (jqXHR, exception,data) {
             $('.csv').append(
               `<div class="alert alert-danger" role="alert">
                 Upload Failed!
+                Please add a valid csv with appropriate schema..!!
               </div>`
             );
             console.log('failed!');
@@ -118,3 +177,4 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
   integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </head>
+</html>
