@@ -5,9 +5,9 @@ import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for, abort, \
     send_from_directory, Response
 
-from test import ReadData
-from totalwork import TotalWork
-from LeaveHolidayAbsent import LeaveHolidayAbsent
+from Task.test import ReadData
+from Task.totalwork import TotalWork
+from Task.LeaveHolidayAbsent import LeaveHolidayAbsent
 
 
 # import imghdr
@@ -47,13 +47,13 @@ def upload_files():
                 'First half start',
                 'Second half end',
                 'Second half start'}
-        
+
         uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
         session['FILE_NAME'] = filename
         df = pd.read_csv(session['FILE_NAME'])
         if set(df.columns) != head:
-            return {"error":"error"},409
-        table = df[:5].to_html(classes='mystyle',index=False).replace(
+            return {"error": "error"}, 409
+        table = df[:5].to_html(classes='mystyle', index=False).replace(
             'border="1"', 'border="0"')
         data = {"filename": filename, "table": table}
     return Response(json.dumps(data))
@@ -80,8 +80,8 @@ def data():
         leave = LHA.leave
         present = LHA.present
 
-        return render_template('bar_chart.html', title='Bitcoin Monthly Price \
-        in USD', max=17000, labels=bar_labels, values=bar_values,
+        return render_template('bar_chart.html', title='attendance sheet',
+                               max=17000, labels=bar_labels, values=bar_values,
                                absent=absent,
                                holiday=holiday,
                                leave=leave,
