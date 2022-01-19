@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 import json
 import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for, abort, \
-    send_from_directory, Response
+    send_from_directory, Response, jsonify
 
 from Task.test import ReadData
 from Task.totalwork import TotalWork
@@ -52,7 +52,11 @@ def upload_files():
         session['FILE_NAME'] = filename
         df = pd.read_csv(session['FILE_NAME'])
         if set(df.columns) != head:
-            return {"error": "error"}, 409
+            table = df[:5].to_html(classes='mystyle', index=False).replace(
+                'border="1"', 'border="0"')
+            data = {"filename": filename, "table": table}
+            return Response(json.dumps(data)),409
+
         table = df[:5].to_html(classes='mystyle', index=False).replace(
             'border="1"', 'border="0"')
         data = {"filename": filename, "table": table}
