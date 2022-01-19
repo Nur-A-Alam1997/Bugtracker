@@ -1,21 +1,23 @@
 import os
+from uuid import uuid4
 from werkzeug.utils import secure_filename
 import json
 import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for, abort, \
     send_from_directory, Response, jsonify
 
-from Task.test import ReadData
+from Task.read_data import ReadData
 from Task.totalwork import TotalWork
 from Task.LeaveHolidayAbsent import LeaveHolidayAbsent
-
+from Task.remove_csv import remove_csv
 
 # import imghdr
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
 app.config['UPLOAD_EXTENSIONS'] = ['.csv', '.CSV']
-app.config['UPLOAD_PATH'] = './'
+UPLOAD_FOLDER = './temp/'
+app.config['UPLOAD_PATH'] = UPLOAD_FOLDER
 app.secret_key = 'BAD_SECRET_KEY'
 
 
@@ -35,7 +37,9 @@ def home():
 @app.route('/', methods=['POST'])
 def upload_files():
     uploaded_file = request.files['file']
+    upload_dir = app.config['UPLOAD_PATH']
     filename = secure_filename(uploaded_file.filename)
+    filename = str(uuid4().int)+(filename)
     if filename != '':
         file_ext = os.path.splitext(filename)[1]
         print(file_ext)
@@ -48,9 +52,9 @@ def upload_files():
                 'Second half end',
                 'Second half start'}
 
-        uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
-        session['FILE_NAME'] = filename
-        df = pd.read_csv(session['FILE_NAME'])
+        uploaded_file.save(os.path.join(upload_dir, filename))
+        
+        df = pd.read_csv(os.path.join(upload_dir, filename))
         if set(df.columns) != head:
             table = df[:5].to_html(classes='mystyle', index=False).replace(
                 'border="1"', 'border="0"')
@@ -63,10 +67,13 @@ def upload_files():
     return Response(json.dumps(data))
 
 
-@app.route("/data")
-def data():
-    if session:
-        data = ReadData(session['FILE_NAME'])
+@app.route("/<filename>")
+def data(filename):
+    upload_dir = app.config['UPLOAD_PATH']
+    file_ = upload_dir+filename
+    file_exists = os.path.exists(upload_dir+filename)
+    if file_exists:
+        data = ReadData(file_)
 
         totalwork = TotalWork(data.read_data)
         total_work_in_month_values, total_work_in_month_bar \

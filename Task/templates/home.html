@@ -66,6 +66,8 @@
   <div class="container m-5">
     <div class="card-body">
 
+      <a href="https://raw.githubusercontent.com/Nur-A-Alam1997/DataVisualizer/data-viz/Task/files/sample.csv"
+        download>Download Sample</a>
       <p style="color:#d5d5d5">Sample file schema</p>
       <img src="{{url_for('static', filename='sample.png')}}" alt="" width="700" height="200">
     </div>
@@ -85,7 +87,7 @@
 
 
           </form>
-          <a href="/data" style="cursor: pointer;">
+          <a id="shb" style="cursor: pointer;">
             <button class="btn btn-outline-success button5" disabled id='show-btn'
               style="background-color: #555555">Show Data</button>
             <a>
@@ -155,6 +157,7 @@
                 $('#file-name').append(data["filename"]);
                 $('#table').append(data["table"]);
                 $('#table-1').removeAttr('hidden')
+                $('#shb').attr("href", data["filename"])
                 $('#show-btn').removeAttr('disabled')
                 counter++
               }
