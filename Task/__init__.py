@@ -14,7 +14,7 @@ from Task.remove_csv import remove_csv
 # import imghdr
 
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
+# app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
 app.config['UPLOAD_EXTENSIONS'] = ['.csv', '.CSV']
 UPLOAD_FOLDER = './temp/'
 app.config['UPLOAD_PATH'] = UPLOAD_FOLDER
@@ -59,6 +59,7 @@ def upload_files():
             table = df[:5].to_html(classes='mystyle', index=False).replace(
                 'border="1"', 'border="0"')
             data = {"filename": filename, "table": table}
+            print(table)
             return Response(json.dumps(data)),409
 
         table = df[:5].to_html(classes='mystyle', index=False).replace(
