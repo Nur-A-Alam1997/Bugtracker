@@ -51,7 +51,7 @@ def upload_files():
                 'First half start',
                 'Second half end',
                 'Second half start'}
-
+        remove_csv(upload_dir)
         uploaded_file.save(os.path.join(upload_dir, filename))
         
         df = pd.read_csv(os.path.join(upload_dir, filename))

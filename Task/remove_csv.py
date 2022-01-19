@@ -7,7 +7,7 @@ def remove_csv(filepath):
     print(test)
     for item in test:
         if item.endswith(".csv") or item.endswith(".CSV"):
-            # os.remove(item)
+            os.remove(dir_name+item)
             print("done")
             # os.remove(os.path.join(app.config['UPLOAD_PATH'], filename))
 
